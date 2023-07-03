@@ -75,8 +75,3 @@ class ColaTransmitir(Cola):
             
     def __str__(self) -> str:
         return f"nodos: {self.nodos}, totalnodos: {self.totalnodos}, items: {self.items}"
-            
-
-
-
-    
