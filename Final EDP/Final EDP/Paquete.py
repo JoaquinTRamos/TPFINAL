@@ -4,7 +4,7 @@ from Metadata import Metadata
 
 class Paquete():
     def __init__(self, timestamp, metadata:Metadata, mensaje:str):
-        self.timestamp = timestamp
+        self.timestamp = timestamp # Para mi esto deberia formar parte del Metadata.
         self.metadata:Metadata = metadata
         self.mensaje:str = mensaje
 
