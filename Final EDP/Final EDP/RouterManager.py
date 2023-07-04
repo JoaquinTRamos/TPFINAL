@@ -15,7 +15,7 @@ class LinkedList:
     def addRouter(self, nuevoRouter:Router):
         newNode = Node(nuevoRouter)
         if nuevoRouter.coordenada in self.routersCoordenates:
-            raise duplicateRouterException()
+            raise DuplicateRouterException(nuevoRouter.coordenada)
         else:
             self.routersCoordenates.add(newNode.Router.coordenada)
 
@@ -35,20 +35,20 @@ class LinkedList:
                 current.prev = newNode
 
 
-class duplicateRouterException(Exception):
-    def __init__(self, message:str ="Ya existe un router en esa coordenada"):
-        super().__init__(message)
+class DuplicateRouterException(Exception):
+    def __init__(self, coord: int, message:str ="Ya existe un router en la coordenada: "):
+        super().__init__(message + str(coord))
 
 #TESTING -- TESTING -- TESTING
 if __name__ == "__main__":
     lista = LinkedList()
-    prueba = [1,1,4,5,3,2,23,42,21,22]
+    prueba = [1,4,5,3,2,23,42,21,22]
 
     for i in prueba:
         lista.addRouter(Router(i))
     #recorrer la linked list e imprimir los resultados
     current = lista.head
-    while current != None:
+    while current != None: 
         print(current.Router.coordenada)
         current = current.next
 

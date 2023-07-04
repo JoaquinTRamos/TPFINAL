@@ -1,6 +1,6 @@
 from TimeManager import TimeManager
 
-# Esta clase representa la simulacion entera, y ante cualquier consulta sobre los managers debera pasar por la instancia instance.
+# Esta clase representa la simulacion entera, y ante cualquier consulta sobre los managers debera pasar por la instancia "instance".
 class RoutingSim():
     def __init__(self) -> None:
         self.timeManager = TimeManager()
@@ -16,4 +16,5 @@ class RoutingSim():
 
 instance = RoutingSim()
 instance.timeManager.set_tiempo_simulacion(100) # Cantidad de ticks en la simulacion
+
 instance.iniciar() # Comienza la simulacion <- Temporal para probar implementacion de tiempo

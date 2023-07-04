@@ -20,7 +20,7 @@ class TimeManager():
         self._tiempo_simulacion: int = 0
         pass
 
-    def subscribir_accion(self, accion: Callable[[None],None]) -> None: # Cambiar typing si necesitamos Input/Output
+    def subscribir_accion(self, accion: Callable[[None],None]) -> None: # Cambiar typing de accion si necesitamos Input/Output distintos
         self._tick.on_tick += accion
 
     def set_tiempo_simulacion(self, cantidad_ticks: int) -> None:
