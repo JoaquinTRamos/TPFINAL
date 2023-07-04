@@ -20,7 +20,7 @@ class TimeManager():
         self._tiempo_simulacion: int = 0
         pass
 
-    def subscribir_accion(self, accion: Callable[[None],None]) -> None: # Cambiar typing de accion si necesitamos Input/Output distintos
+    def subscribir_accion(self, accion: Callable[[int],None]) -> None: # Cambiar typing de accion si necesitamos Input/Output distintos
         self._tick.on_tick += accion
 
     def set_tiempo_simulacion(self, cantidad_ticks: int) -> None:
@@ -32,7 +32,7 @@ class TimeManager():
     def next_tick(self) -> None:
         print(f"Next tick was called, time left in ticks:{self._tiempo_simulacion}")
         self._tiempo_simulacion -= self._tick.tiempoPorTick
-        self._tick.on_tick() # Si quiero que haya algun input para el evento entonces debemos pasar aca eso
+        self._tick.on_tick(self._tick.tiempoPorTick) # Si quiero que haya algun input para el evento entonces debemos pasar aca eso
         
 
     
