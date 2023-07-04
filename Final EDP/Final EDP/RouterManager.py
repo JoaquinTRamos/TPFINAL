@@ -1,13 +1,13 @@
 # implement a linked list
 from Router import Router
 
-class Node:
+class Node():
     def __init__(self, router:Router):
         self.Router:Router = router
         self.next = None
         self.prev = None
 
-class LinkedList:
+class LinkedList():
     def __init__(self):
         self.head = None
         self.routersCoordenates = set()
