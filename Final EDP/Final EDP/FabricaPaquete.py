@@ -1,42 +1,39 @@
 import random as r
-import names
+from Paquete import *
 
-# Esta .py se encargara de la produccion de grupos de clientes, simulando entrada de los mismos
-class FabricaClientes():
+# Esta .py se encargara de la produccion de paquetes, simulando entrada de los mismos
+class FabricaPaquetes():
     
     def __init__(self) -> None:
-        self.tiempoParaProxCliente: int = 0
-        self.n_clientes: int = 0
-        self.lmda = 60
-
-    def setLambda(self, lmda: int) -> None:
-        self.lmda = lmda
-
-    def __tiempoEntreClientes(self) -> None: # Esto devolvera la cantidad de tiempo para que llegue un nuevo grupo de clientes
-        self.tiempoParaProxCliente = tiempo_aleatorio(self.lmda)
+        self.tiempoParaProxPaquete: int = 0
+        self.n_paquetes: int = 0
     
+    def tiempo_aleatorio(mu: int, sigma: int) -> int:
+        return round(r.normalvariate(mu, sigma))
+    
+    def __tiempoEntrePaquetes(self) -> None: # Esto devolvera la cantidad de tiempo para que llegue un nuevo paquete
+        self.tiempoParaProxPaquete = self.tiempo_aleatorio()
+     
     def __descontarTiempo(self, tiempoPorTick:int) -> None: # Esta funcion ajusta la cantidad de tiempo entre c/tick
-        self.tiempoParaProxCliente -= tiempoPorTick
+        self.tiempoParaProxPaquete -= tiempoPorTick
         pass
 
-    def fabricarClientes(self, tiempoPorTick:int) -> None: # Esta seria la funcion que se callea por tick
-
-        if(self.tiempoParaProxCliente > 1):
+    def contarTicks(self, tiempoPorTick:int) -> None: # Esta funcion se encarga de contar los ticks y descontar tiempo
+    
+        if(self.tiempoParaProxPaquete > 1):
             self.__descontarTiempo(tiempoPorTick)
             return None
-        
-        cantidadClientes = r.randint(1,4) # Entre 1 a X, donde X es la cantidad maxima de grupos de clientes que acepta el restaurante
+    # TODO Esta funcion llama a RouterManager para que luego llame a fabricarPaquete
+    
+    def fabricarPaquete(self) -> Paquete: # Esta seria la funcion que se callea por tick
+    
+        nuevoPaquete = Paquete(Id = self.n_paquetes) 
+        self.n_paquetes += 1
 
-        self.n_clientes = self.n_clientes + cantidadClientes
-        
-        resultado = GrupoClientes()
-
-        for cliente in range(cantidadClientes):
-            nuevoCliente = Cliente(names.get_full_name())
-            resultado.addCliente(nuevoCliente)
-
-        resultado.requestMesa()
-        self.__tiempoEntreClientes() # Estas lineas de codigo producen un nuevo grupo, lo encolan y generan un nuevo tiempo entre clientes
-
+        self.__tiempoEntrePaquetes() 
+        return nuevoPaquete
+    
+    
     def __str__(self) -> str:
-        return f"Tiempo entre clientes: {self.tiempoParaProxCliente}, Cantidad de clientes: {self.n_clientes}"
+        return f"Tiempo entre paquetes: {self.tiempoParaProxPaquete}, Cantidad de paquetes: {self.n_paquetes}"
+    
