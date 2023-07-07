@@ -26,7 +26,6 @@ class FabricaRouters():
     
         from RoutingSim import instance
         instance.routerManager.addRouter(self.fabricarRouter())
-        # TODO ver como hacer para producir un nuevo router.
 
     def fabricarRouter(self) -> Router: # Esta seria la funcion que se callea por tick
     
