@@ -2,13 +2,18 @@
 from Metadata import Metadata
 from lorem_text import lorem
 from random import randint
+from enum import Enum
 
+class EstadoPaquete(Enum):
+    EN_PROCESO = 0
+    RECIBIDO = 1
 
 class Paquete():
     def __init__(self, id: int, metadata: (Metadata|None)):
         self.id = id
         self.metadata:Metadata = metadata
         self.mensaje:str = lorem.words(randint(1,25))
+        self.estado = EstadoPaquete.EN_PROCESO
 
     def __str__(self):
         return f"Paquete {self.id}:, {self.metadata}, {self.mensaje}"

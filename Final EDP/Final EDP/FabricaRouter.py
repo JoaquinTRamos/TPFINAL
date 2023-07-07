@@ -8,11 +8,11 @@ class FabricaRouters():
         self.tiempoParaProxRouter: int = 0
         self.n_routers: int = 0
 
-    def tiempo_aleatorio(self, mu: int, sigma: int) -> int:
-        return round(r.normalvariate(mu, sigma))
+    def __tiempo_aleatorio(self, mu: int, sigma: int) -> int:
+        return round(r.normalvariate(mu, sigma), 0)
     
     def __tiempoEntreRouters(self) -> None: # Esto devolvera la cantidad de tiempo para que llegue un nuevo router
-        self.tiempoParaProxRouter = self.tiempo_aleatorio(self)
+        self.tiempoParaProxRouter = self.__tiempo_aleatorio() #TODO poner mu y sigma acordes
      
     def __descontarTiempo(self, tiempoPorTick:int) -> None: # Esta funcion ajusta la cantidad de tiempo entre c/tick
         self.tiempoParaProxRouter -= tiempoPorTick
@@ -23,8 +23,9 @@ class FabricaRouters():
         if(self.tiempoParaProxRouter > 1):
             self.__descontarTiempo(tiempoPorTick)
             return None
-    # TODO Esta funcion llama a RouterManager para que luego llame a fabricarRouter
     
+        # TODO ver como hacer para producir un nuevo router.
+
     def fabricarRouter(self) -> Router: # Esta seria la funcion que se callea por tick
     
         nuevoRouter = Router(self.n_routers)

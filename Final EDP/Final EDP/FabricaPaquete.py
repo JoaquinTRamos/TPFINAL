@@ -7,12 +7,13 @@ class FabricaPaquetes():
     def __init__(self) -> None:
         self.tiempoParaProxPaquete: int = 0
         self.n_paquetes: int = 0
+        self.paquetes_enviados: list[Paquete] = []
     
-    def tiempo_aleatorio(self, mu: int, sigma: int) -> int:
-        return round(r.normalvariate(mu, sigma))
+    def __tiempo_aleatorio(self, mu: int, sigma: int) -> int:
+        return round(r.normalvariate(mu, sigma), 0)
     
     def __tiempoEntrePaquetes(self) -> None: # Esto devolvera la cantidad de tiempo para que llegue un nuevo paquete
-        self.tiempoParaProxPaquete = self.tiempo_aleatorio(self)
+        self.tiempoParaProxPaquete = self.__tiempo_aleatorio() #TODO poner mu y sigma acordes
      
     def __descontarTiempo(self, tiempoPorTick:int) -> None: # Esta funcion ajusta la cantidad de tiempo entre c/tick
         self.tiempoParaProxPaquete -= tiempoPorTick
@@ -23,10 +24,12 @@ class FabricaPaquetes():
         if(self.tiempoParaProxPaquete > 1):
             self.__descontarTiempo(tiempoPorTick)
             return None
-    # TODO Esta funcion llama a RouterManager para que luego llame a fabricarPaquete
+        
+        from RoutingSim import instance
+        instance.routerManager.requestPaquete()
     
-    def fabricarPaquete(self) -> Paquete: # Esta seria la funcion que se callea por tick
-    
+    def fabricarPaquete(self) -> Paquete:
+        # TODO Implementar manera para generar Metadata
         nuevoPaquete = Paquete(Id = self.n_paquetes) 
         self.n_paquetes += 1
 

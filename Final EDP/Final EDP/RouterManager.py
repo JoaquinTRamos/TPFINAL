@@ -1,5 +1,6 @@
 # implement a linked list
 from Router import Router
+from random import randint
 
 class Node():
     def __init__(self, router:Router):
@@ -7,12 +8,12 @@ class Node():
         self.next = None
         self.prev = None
 
-class LinkedList():
+class RouterManager():
     def __init__(self):
         self.head = None
-        self.routersCoordenates = set()
+        self.routersCoordenates: set[Node] = set()
 
-    def addRouter(self, nuevoRouter:Router):
+    def addRouter(self, nuevoRouter:Router) -> None:
         newNode = Node(nuevoRouter)
         if nuevoRouter.coordenada in self.routersCoordenates:
             raise DuplicateRouterException(nuevoRouter.coordenada)
@@ -34,6 +35,19 @@ class LinkedList():
                 current.prev.next.prev = current.prev
                 current.prev = newNode
 
+    def requestPaquete(self) -> None:
+        resultado = randint(0,len(self.routersCoordenates))
+        current = self.head
+
+        for i in range(resultado):
+            if(current is not None):
+                current = current.next()
+            else:
+                break
+        
+        current.Router.requestPaquete()
+
+
 
 class DuplicateRouterException(Exception):
     def __init__(self, coord: int, message:str ="Ya existe un router en la coordenada: "):
@@ -41,7 +55,7 @@ class DuplicateRouterException(Exception):
 
 #TESTING -- TESTING -- TESTING
 if __name__ == "__main__":
-    lista = LinkedList()
+    lista = RouterManager()
     prueba = [1,4,5,3,2,23,42,21,22]
 
     for i in prueba:

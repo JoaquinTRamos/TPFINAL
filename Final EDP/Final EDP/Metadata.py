@@ -5,6 +5,5 @@ class Metadata():
         self.timestamp = timestamp
         self.origen = origen
         self.destino = destino
-        pass
+        
     
-    pass

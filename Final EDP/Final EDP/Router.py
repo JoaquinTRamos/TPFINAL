@@ -13,7 +13,7 @@ class Router():
             self.coordenada:int = coordenada
             self.estado:RouterEstado = RouterEstado.AGREGADO
             self.cola_propios:Cola = Cola()
-            self.cola_transmitir = ColaTransmitir()
+            self.cola_transmitir: ColaTransmitir = ColaTransmitir()
 
     def get_coordenada(self):
         return self.coordenada
@@ -24,8 +24,13 @@ class Router():
     def get_cola_retransmitir(self):
         return self.cola_retransmitir
 
-    def set_estado(self, estado) -> None:
+    def set_estado(self, estado: RouterEstado) -> None:
         self.estado = estado
+
+    def requestPaquete(self) -> None:
+        from RoutingSim import instance
+        self.cola_propios.encolar(instance.paqueteManager.fabricaPaquete.fabricarPaquete())
+        pass
 
 
     def __str__(self):
