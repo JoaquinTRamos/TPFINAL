@@ -35,3 +35,11 @@ class Router():
 
     def __str__(self):
         return "Coordenada: " + str(self.coordenada) + "\nEstado: " + str(self.estado) + "\nCola Propios: " + str(self.cola_propios) + "\nCola Retransmitir: " + str(self.cola_retransmitir) + "\n"
+
+
+
+    # agregar desencolador de mensajes 
+    # tiene que encontrar el objeto mensaje que corresponde mandar y solicitar la direccion de memoria del router 
+    # al que se lo tiene que enviar al router manager
+    # y llamar a una funcion de recibirMensaje() que encole el mensaje donde corresponda.
+

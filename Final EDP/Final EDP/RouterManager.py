@@ -2,6 +2,18 @@
 from Router import Router
 from random import randint
 
+from FabricaPaquete import *
+from FabricaRouter import *
+
+
+class DuplicateRouterException(Exception):
+    def __init__(self, coord: int, message:str ="Ya existe un router en la coordenada: "):
+        super().__init__(message + str(coord))
+class NonExistingRouterException(Exception):
+    def __init__(self, coord: int, message:str ="No existe un router en la coordenada: "):
+        super().__init__(message + str(coord))
+
+
 class Node():
     def __init__(self, router:Router):
         self.Router:Router = router
@@ -9,9 +21,10 @@ class Node():
         self.prev = None
 
 class RouterManager():
-    def __init__(self):
+    def __init__(self) -> None:
         self.head = None
-        self.routersCoordenates: set[Node] = set()
+        self.routersCoordenates = set()
+        self.fabricaPaquete = FabricaPaquetes()
 
     def addRouter(self, nuevoRouter:Router) -> None:
         newNode = Node(nuevoRouter)
@@ -34,35 +47,67 @@ class RouterManager():
                 current.prev.next.next = current
                 current.prev.next.prev = current.prev
                 current.prev = newNode
+    def removeRouter(self, bajaRouter:Router) -> None:
+        if bajaRouter.coordenada not in self.routersCoordenates:
+            raise NonExistingRouterException(bajaRouter.coordenada)
+        else:
+            self.routersCoordenates.remove(bajaRouter.coordenada)
 
-    def requestPaquete(self) -> None:
-        resultado = randint(0,len(self.routersCoordenates))
-        current = self.head
+            current = self.head
+            while current.Router.coordenada != bajaRouter.coordenada:
+                current = current.next
 
-        for i in range(resultado):
-            if(current is not None):
-                current = current.next()
+            if current.prev is None:
+                self.head = current.next
+                self.head.prev = None
+            elif current.next is None:
+                current.prev.next = None
             else:
-                break
+                current.prev.next = current.next
+                current.next.prev = current.prev
+
+    def contarTicksFabricaRouter(self, tiempoPorTick:int) -> None:
+        self.fabricaRouter.contarTicks(tiempoPorTick)
+    def requestPaquete(self) -> None:       
+        self.getRandomAvailableRouter.requestPaquete()
+    
+    def getRandomAvailableRouter(self) -> Router:
+        # funcion que devuelve un router al azar de entre los existentes
         
-        current.Router.requestPaquete()
+        #cantidad de routers existentes
+        cantidadRouters = len(self.routersCoordenates)
 
+        #numero random entre 1 y la cantidad de routers
+        x = randint(1,cantidadRouters)
 
+        current = self.head
+        for i in range(0,x):
+            current = current.next
 
-class DuplicateRouterException(Exception):
-    def __init__(self, coord: int, message:str ="Ya existe un router en la coordenada: "):
-        super().__init__(message + str(coord))
+        return current.Router
+        
 
 #TESTING -- TESTING -- TESTING
 if __name__ == "__main__":
+
+    def imprimirLista():
+        #recorrer la linked list e imprimir los resultados
+        current = lista.head
+        while current != None: 
+            print(current.Router.coordenada)
+            current = current.next
+        print("-----")
+
     lista = RouterManager()
     prueba = [1,4,5,3,2,23,42,21,22]
 
     for i in prueba:
         lista.addRouter(Router(i))
-    #recorrer la linked list e imprimir los resultados
-    current = lista.head
-    while current != None: 
-        print(current.Router.coordenada)
-        current = current.next
+
+    imprimirLista()
+
+    lista.removeRouter(lista.head.Router)
+    lista.removeRouter(Router(42))
+
+    imprimirLista()
 
