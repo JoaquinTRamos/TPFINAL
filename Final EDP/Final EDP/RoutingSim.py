@@ -8,7 +8,7 @@ class RoutingSim():
         self.timeManager = TimeManager()
         self.paqueteManager = PaqueteManager()
         self.routerManager = RouterManager()
-
+        # Atributo de tiempo de inicio de simulacion
         self.suscribir_acciones()
         pass
 
@@ -20,6 +20,7 @@ class RoutingSim():
         pass
 
     def iniciar(self) -> None:
+        # Agarra el tiempo
         while self.timeManager.get_tiempo_simulacion() >= 0:
             self.timeManager.next_tick()
 

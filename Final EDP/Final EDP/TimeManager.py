@@ -18,6 +18,7 @@ class TimeManager():
     def __init__(self) -> None:
         self._tick: Tick = Tick()
         self._tiempo_simulacion: int = 0
+        self._tiempo_total: int = 0
         pass
 
     def subscribir_accion(self, accion: Callable[[int],None]) -> None: # Cambiar typing de accion si necesitamos Input/Output distintos
@@ -25,9 +26,13 @@ class TimeManager():
 
     def set_tiempo_simulacion(self, cantidad_ticks: int) -> None:
         self._tiempo_simulacion = cantidad_ticks
+        self._tiempo_total = cantidad_ticks
 
     def get_tiempo_simulacion(self) -> int:
         return self._tiempo_simulacion
+
+    def get_current_tick(self) -> int:
+        return self._tiempo_total - self._tiempo_simulacion
 
     def next_tick(self) -> None:
         print(f"Next tick was called, time left in ticks:{self._tiempo_simulacion}")
