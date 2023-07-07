@@ -30,7 +30,7 @@ class FabricaPaquetes():
     
     def fabricarPaquete(self) -> Paquete:
         # TODO Implementar manera para generar Metadata
-        nuevoPaquete = Paquete(Id = self.n_paquetes) 
+        nuevoPaquete = Paquete(Id = self.n_paquetes, metadata= Metadata()) 
         self.n_paquetes += 1
 
         self.__tiempoEntrePaquetes() 
