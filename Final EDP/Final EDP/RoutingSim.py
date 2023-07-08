@@ -14,6 +14,7 @@ class RoutingSim():
 
     def suscribir_acciones(self) -> None: # Aca se establece el orden para el evento de on_tick
         self.timeManager.subscribir_accion(self.paqueteManager.contarTicksFabricaPaquete)
+        self.timeManager.subscribir_accion(self.routerManager.contarTicksFabricaRouter)
 
     # Metodo para reiniciar la simulacion
     def reset(self) -> None:

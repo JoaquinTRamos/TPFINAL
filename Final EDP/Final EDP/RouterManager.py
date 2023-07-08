@@ -24,14 +24,18 @@ class RouterManager():
     def __init__(self) -> None:
         self.head = None
         self.routersCoordenates = set()
+        self.fabricaRouter = FabricaRouters()
         self.fabricaPaquete = FabricaPaquetes()
 
     def addRouter(self, nuevoRouter:Router) -> None:
+        print("Agregando router: " + str(nuevoRouter.coordenada) + " a la lista de routers")
         newNode = Node(nuevoRouter)
         if nuevoRouter.coordenada in self.routersCoordenates:
+            print("Ya existe un router en la coordenada: " + str(nuevoRouter.coordenada))
             raise DuplicateRouterException(nuevoRouter.coordenada)
         else:
             self.routersCoordenates.add(newNode.Router.coordenada)
+            print("Cantidad de routers: " + str(len(self.routersCoordenates)))
 
         if self.head is None:
             self.head = newNode

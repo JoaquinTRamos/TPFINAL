@@ -8,6 +8,6 @@ class Metadata():
         
     # Definir una funcion que devuelva el tiempo en el que se creo el paquete teniendo en cuenta los Ticks para asignarselo a timestamp
     def tiempoPaquete(self) -> int:
-        
+        pass
         
     
