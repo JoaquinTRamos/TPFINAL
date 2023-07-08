@@ -29,7 +29,8 @@ class FabricaRouters():
 
     def fabricarRouter(self) -> Router: # Esta seria la funcion que se callea por tick
     
-        nuevoRouter = Router(self.n_routers)
+        coordenada = r.randint(0, 100)
+        nuevoRouter = Router(coordenada = coordenada)
         self.n_routers += 1
 
         self.__tiempoEntreRouters() 
