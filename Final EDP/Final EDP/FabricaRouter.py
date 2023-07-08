@@ -31,7 +31,7 @@ class FabricaRouters():
 
     def fabricarRouter(self) -> Router: # Esta seria la funcion que se callea por tick
     
-        coordenada = r.randint(1,10) #TODO Implementar para que haga devuelta en caso de que la coordenada ya exista
+        coordenada = r.randint(1,10) #TODO Implementar cantidad de routers por parametro
         nuevoRouter = Router(coordenada = coordenada)
         self.n_routers += 1
 
