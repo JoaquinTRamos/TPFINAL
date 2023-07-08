@@ -1,7 +1,6 @@
 # implement a linked list
 from Router import Router
 from random import randint
-
 from FabricaPaquete import *
 from FabricaRouter import *
 
@@ -74,6 +73,30 @@ class RouterManager():
         self.fabricaRouter.contarTicks(tiempoPorTick)
     def requestPaquete(self) -> None:       
         self.getRandomAvailableRouter.requestPaquete()
+
+    def enviarMensajesTick(self)-> None:
+        #Funcion que debe ser ejecutada una vez por tick
+        # recorre todos los routers y envia el proximo mensaje de la cola de cada uno
+
+        current = self.head
+        while current != None:
+            # Le pido al current router el proximo paquete a enviar
+            paquete = current.Router.dequeuePaquete()
+
+            # Si el paquete es None, significa que no hay paquetes en la cola de ese router
+            if paquete == None:
+                current = current.next
+                continue
+            # Si el paquete tiene como destino una coordenada mayor lo paso al next router (Router de la derecha)
+            elif paquete.metadata.destino > current.Router.coordenada:
+                current.next.Router.enqueuePaquete(paquete)
+                continue
+            # Si el paquete tiene como destino una coordenada menor lo paso al prev router (Router de la izquierda)
+            elif paquete.metadata.destino < current.Router.coordenada:
+                current.prev.Router.enqueuePaquete(paquete)
+
+            # Continuo el ciclo
+            current = current.next
     
     def getRandomAvailableRouter(self) -> Router:
         # funcion que devuelve un router al azar de entre los existentes
