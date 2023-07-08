@@ -1,5 +1,6 @@
 from events import Events
 from typing import Callable
+from datetime import *
 
 # Esta clase representa una instancia de tiempo denominado tick, donde 1 tick = 100ms o 1/10 seg
 class Tick(Events):
@@ -38,6 +39,9 @@ class TimeManager():
         print(f"Next tick was called, time left in ticks:{self._tiempo_simulacion}")
         self._tiempo_simulacion -= self._tick.tiempoPorTick
         self._tick.on_tick(self._tick.tiempoPorTick) # Si quiero que haya algun input para el evento entonces debemos pasar aca eso
-        
 
-    
+    def get_tiempoPaquete(self, tiempoinicio = datetime.now()) -> datetime:
+        tiempoPaquete = tiempoinicio + timedelta(milliseconds = (self.get_current_tick * 100))
+        return tiempoPaquete.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+        
+     
