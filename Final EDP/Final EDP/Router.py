@@ -62,7 +62,10 @@ class Router():
             except Exception:
                 return None
         else:
-            return self.cola_transmitir.desencolar()
+            try:
+                return self.cola_transmitir.desencolar()
+            except Exception:
+                    return None
 
     # TODO nueva funcion que descuenta tiempo de self._timer -> si timer < 1 entonces cambiar de estado.
 
@@ -76,6 +79,7 @@ class Router():
     def addLogPaquete(self, Paquete: Paquete) -> None:
         # Almacenar el historial de paquetes recibidos -> Se almacena solo los datos relevantes para armar el archivo de logs
         self.logsMensajes[Paquete.metadata.id] = [Paquete.mensaje, Paquete.metadata.origen]
+    
     def exportLogs(self):
         # Exportar los logs de mensajes recibidos a un archivo de 
         with open("ROUTER_{}.txt".format(self.coordenada), "w") as f:
