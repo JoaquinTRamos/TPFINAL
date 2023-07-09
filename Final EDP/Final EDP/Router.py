@@ -19,6 +19,8 @@ class Router():
             self.cola_transmitir: ColaTransmitir = ColaTransmitir()
             self.logsMensajes:dict = {}
             self._timer: int = 0
+            self.propiosProcesados: int = 0
+            self.transmicionProcesados : int = 0
 
     def get_coordenada(self):
         return self.coordenada
@@ -58,12 +60,16 @@ class Router():
     # Desencola el proximo paquete a enviar -> Si la cola de retransmitir esta vacia se desencola de la cola de propios
         if len(self.cola_transmitir) == 0:
             try:
-                return self.cola_propios.desencolar()
+                paquete = self.cola_propios.desencolar()
+                self.propiosProcesados += 1
+                return paquete
             except Exception:
                 return None
         else:
             try:
-                return self.cola_transmitir.desencolar()
+                paquete = self.cola_transmitir.desencolar()
+                self.transmicionProcesados += 1
+                return paquete
             except Exception:
                     return None
 
