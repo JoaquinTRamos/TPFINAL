@@ -90,7 +90,6 @@ class RouterManager():
 
             # Si el paquete es None, significa que no hay paquetes en la cola de ese router
             if paquete == None:
-                current = current.next
                 continue
             # Si el paquete tiene como destino una coordenada mayor lo paso al next router (Router de la derecha)
             elif paquete.metadata.destino > current.Router.coordenada:
