@@ -50,6 +50,7 @@ class RouterManager():
                 current.prev.next.next = current
                 current.prev.next.prev = current.prev
                 current.prev = newNode
+                
     def removeRouter(self, bajaRouter:Router) -> None:
         if bajaRouter.coordenada not in self.routersCoordenates:
             raise NonExistingRouterException(bajaRouter.coordenada)
@@ -71,6 +72,10 @@ class RouterManager():
 
     def contarTicksFabricaRouter(self, tiempoPorTick:int) -> None:
         self.fabricaRouter.contarTicks(tiempoPorTick)
+
+    def contarTicksRouters(self, tiempoPorTick:int) -> None:
+        pass
+
     def requestPaquete(self) -> None:       
         self.getRandomAvailableRouter.requestPaquete()
 

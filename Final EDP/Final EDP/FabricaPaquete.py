@@ -7,7 +7,6 @@ class FabricaPaquetes():
     def __init__(self) -> None:
         self.tiempoParaProxPaquete: int = 0
         self.n_paquetes: int = 0
-        self.paquetes_enviados: list[Paquete] = []
     
     def __tiempo_aleatorio(self, mu: int, sigma: int) -> int:
         return round(r.normalvariate(mu, sigma), 0)
@@ -28,9 +27,16 @@ class FabricaPaquetes():
         from RoutingSim import instance
         instance.routerManager.requestPaquete()
     
-    def fabricarPaquete(self) -> Paquete:
-        # TODO Implementar manera para generar Metadata
-        nuevoPaquete = Paquete(Id = self.n_paquetes, metadata= Metadata()) 
+    def fabricarPaquete(self, origen: int) -> Paquete:
+        
+        # Selecciona una coordenada al azar que no sea la misma que el origen
+        from RoutingSim import instance
+
+        destino:int = instance.routerManager.getRandomAvailableRouter().coordenada
+        while destino == origen:
+            destino = instance.routerManager.getRandomAvailableRouter().coordenada
+        
+        nuevoPaquete = Paquete(Id = self.n_paquetes, metadata= Metadata(origen=origen,destino=destino)) 
         self.n_paquetes += 1
 
         self.__tiempoEntrePaquetes() 

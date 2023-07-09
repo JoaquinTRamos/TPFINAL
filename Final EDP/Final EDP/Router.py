@@ -33,8 +33,9 @@ class Router():
     def requestPaquete(self) -> None:
         # Solicitar un paquete con origen propio para enviar a otro router -> Es un NUEVO paquete
         from RoutingSim import instance
-        self.cola_propios.encolar(instance.paqueteManager.fabricaPaquete.fabricarPaquete())
+        self.enqueuePaquete(instance.paqueteManager.fabricaPaquete.fabricarPaquete(self.coordenada))
         pass
+
     def enqueuePaquete(self, Paquete: Paquete) -> None:
     # Encolar un paquete -> Si el paquete es propio se encola en la cola de propios.
     #                       Si es para retransmitir se encola en la cola de retransmitir y se guarda el log
@@ -49,10 +50,14 @@ class Router():
             # al ser un mensaje recibido, tiene que guardar el log
             self.addLogPaquete(Paquete)
             self.cola_transmitir.encolar(Paquete)
-    def dequeuePaquete(self) -> Paquete:
+    
+    def dequeuePaquete(self) -> (Paquete|None):
     # Desencola el proximo paquete a enviar -> Si la cola de retransmitir esta vacia se desencola de la cola de propios
         if len(self.cola_transmitir) == 0:
-            return self.cola_propios.desencolar()
+            try:
+                return self.cola_propios.desencolar()
+            except Exception:
+                return None
         else:
             return self.cola_transmitir.desencolar()
 
