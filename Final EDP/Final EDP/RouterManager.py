@@ -73,13 +73,18 @@ class RouterManager():
     def contarTicksFabricaRouter(self, tiempoPorTick:int) -> None:
         self.fabricaRouter.contarTicks(tiempoPorTick)
 
-    def contarTicksRouters(self, tiempoPorTick:int) -> None:
-        pass
-
     def requestPaquete(self) -> None:       
         self.getRandomAvailableRouter.requestPaquete()
 
-    def enviarMensajesTick(self)-> None:
+    def checkearCaidaTick(self, tiempoPorTick:int) -> None:
+        if(randint(1,10) < 2):
+            router = self.getRandomAvailableRouter()
+            router.desactivarRouter(self.removeRouter)
+            # TODO aca continuar logica de agregar a otro set
+        
+        # TODO cualquiera que se encuentra en el set desactivado pasar tick para restar tiempo inactivo
+
+    def enviarMensajesTick(self, tiempoPorTick:int)-> None:
         #Funcion que debe ser ejecutada una vez por tick
         # recorre todos los routers y envia el proximo mensaje de la cola de cada uno
 

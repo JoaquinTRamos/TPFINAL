@@ -1,6 +1,8 @@
 from Cola import ColaTransmitir, Cola
 from enum import Enum
 from Paquete import Paquete
+from typing import Callable
+from random import randint
 
 class RouterEstado(Enum):
     AGREGADO = 0
@@ -16,6 +18,7 @@ class Router():
             self.cola_propios:Cola = Cola()
             self.cola_transmitir: ColaTransmitir = ColaTransmitir()
             self.logsMensajes:dict = {}
+            self._timer: int = 0
 
     def get_coordenada(self):
         return self.coordenada
@@ -60,6 +63,13 @@ class Router():
                 return None
         else:
             return self.cola_transmitir.desencolar()
+
+    # TODO nueva funcion que descuenta tiempo de self._timer -> si timer < 1 entonces cambiar de estado.
+
+    def desactivarRouter(self, callback: Callable[["Router"],None]) -> None:
+        self.estado = RouterEstado.INACTIVO
+        self._timer = randint(50,100)
+        callback(self)
 
 
     # FUNCIONES PARA MANTENER LOS LOGS DE MENSAJES RECIBIDOS
