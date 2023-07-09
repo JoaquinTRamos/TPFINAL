@@ -8,9 +8,11 @@ class FabricaRouters():
     def __init__(self) -> None:
         self.tiempoParaProxRouter: int = 0
         self.n_routers: int = 0
+        self.mu = 0
+        self.sigma = 0
 
-    def __tiempo_aleatorio(self, mu: int = 2, sigma: int = 1) -> int:
-        return abs(round(r.normalvariate(mu, sigma), 0))
+    def __tiempo_aleatorio(self) -> int:
+        return abs(round(r.normalvariate(self.mu, self.sigma), 0))
     
     def __tiempoEntreRouters(self) -> None: # Esto devolvera la cantidad de tiempo para que llegue un nuevo router
         self.tiempoParaProxRouter = self.__tiempo_aleatorio() #TODO poner mu y sigma acordes
@@ -25,6 +27,9 @@ class FabricaRouters():
         if(self.tiempoParaProxRouter > 1):
             self.__descontarTiempo(tiempoPorTick)
             return None
+        
+        if(self.mu == 0 and self.sigma == 0): # Si ambos son 0 entonces NO PRODUCE NUEVOS ROUTERS!!!
+            return None
     
         from RoutingSim import instance
         instance.routerManager.addRouter(self.fabricarRouter())
@@ -37,6 +42,22 @@ class FabricaRouters():
 
         self.__tiempoEntreRouters() 
         return nuevoRouter
+    
+    def set_routers(self, cant_routers:int) -> None:
+        for i in range(cant_routers):
+            coordenada = r.randint(1,10) #TODO Implementar cantidad de routers por parametro
+            nuevoRouter = Router(coordenada = coordenada)
+            self.n_routers += 1
+            
+            from RoutingSim import instance
+            instance.routerManager.addRouter(nuevoRouter)
+
+        self.__tiempoEntreRouters()
+
+    def set_timer(self, mu: int, sigma:int) -> None:
+        self.mu = mu
+        self.sigma = sigma
+
     
     
     def __str__(self) -> str:

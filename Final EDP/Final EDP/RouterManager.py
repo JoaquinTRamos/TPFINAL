@@ -1,7 +1,6 @@
 # implement a linked list
 from Router import Router
 from random import randint
-from FabricaPaquete import *
 from FabricaRouter import *
 
 
@@ -24,7 +23,6 @@ class RouterManager():
         self.head = None
         self.routersCoordenates = set()
         self.fabricaRouter = FabricaRouters()
-        self.fabricaPaquete = FabricaPaquetes()
 
     def addRouter(self, nuevoRouter:Router) -> None:
         print("Agregando router: " + str(nuevoRouter.coordenada) + " a la lista de routers")
@@ -74,7 +72,7 @@ class RouterManager():
         self.fabricaRouter.contarTicks(tiempoPorTick)
 
     def requestPaquete(self) -> None:       
-        self.getRandomAvailableRouter.requestPaquete()
+        self.getRandomAvailableRouter().requestPaquete()
 
     def checkearCaidaTick(self, tiempoPorTick:int) -> None:
         if(randint(1,10) < 2):
