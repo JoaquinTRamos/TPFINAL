@@ -36,17 +36,7 @@ class Router():
         return self.cola_retransmitir
 
     def set_estado(self, estado: RouterEstado) -> None:
-        # AGREGAR LOGICA DE GUARDADO DE LOGS
-        # deberia enviar cada cambio de logs a una clase que se encargue de guardarlos
-        # tiene que tener registro del Tick actual para poder guardar el log con el tiempo correspondiente
-
         self.estado = estado
-
-        # de esta manera no se estan guardando los logs en el mismo objeto SystemLogs
-        # se esta creando una instancia nueva cada vez que se llama a set_estado
-        # ver como arreglarlo para no generar imports circulares
-
-        # ademas --> tick debe ser cambiado por el numero actual de tick
         from RoutingSim import instance
         instance.systemLogs.addLog(estado, self, instance.timeManager.get_timestamp())
 
@@ -94,7 +84,6 @@ class Router():
         # Esto facilita el guardado de logs
 
         self.set_estado(RouterEstado.INACTIVO)
-        # ---- ---- ---- ---- ---- ---- ---- ---- ---- LEER COMENTARIO DE ARRIBA
         self._timer = randint(50,100)
         callback(self)
 
@@ -108,7 +97,7 @@ class Router():
         # Exportar los logs de mensajes recibidos a un archivo de 
         with open("ROUTER_{}.txt".format(self.coordenada), "w") as f:
             for values in self.logsMensajes.values():
-                f.write(str(values[1]) + "-" + str(values[0]) + "\n")
+                f.write("ROUTER_" + str(values[1]) + "  -   " + str(values[0]) + "\n")
 
     def __str__(self):
         return "Coordenada: " + str(self.coordenada) + "\nEstado: " + str(self.estado) + "\nCola Propios: " + str(self.cola_propios) + "\nCola Retransmitir: " + str(self.cola_retransmitir) + "\n"

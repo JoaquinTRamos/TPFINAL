@@ -37,7 +37,6 @@ class TimeManager():
         return self._tiempo_total - self._tiempo_simulacion
 
     def next_tick(self) -> None:
-        print(f"Next tick was called, time left in ticks:{self._tiempo_simulacion}")
         self._tiempo_simulacion -= self._tick.tiempoPorTick
         self._tick.on_tick(self._tick.tiempoPorTick) # Si quiero que haya algun input para el evento entonces debemos pasar aca eso
 

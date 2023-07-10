@@ -32,14 +32,11 @@ class RouterManager():
 
     # agregar y sacar routers
     def addRouter(self, nuevoRouter:Router) -> None:
-        print("Agregando router: " + str(nuevoRouter.coordenada) + " a la lista de routers")
         newNode = Node(nuevoRouter)
         if nuevoRouter.coordenada in self.routersCoordenates:
-            print("Ya existe un router en la coordenada: " + str(nuevoRouter.coordenada))
             raise DuplicateRouterException(nuevoRouter.coordenada)
         else:
             self.routersCoordenates.add(newNode.Router.coordenada)
-            print("Cantidad de routers: " + str(len(self.routersCoordenates)))
 
         if self.head is None:
             self.head = newNode
@@ -138,7 +135,6 @@ class RouterManager():
         else:    
             x = randint(1,cantidadRouters)
 
-        print(f"{x}, {cantidadRouters}")
         current = self.head
         for i in range(x-1):
             if(current.next == None):
@@ -172,11 +168,14 @@ class RouterManager():
             # Continuo el ciclo
             current = current.next
     
-    def exportLogs(self) -> None:
+    def exportAllRouterLogs(self) -> None:
         current = self.head
         while current != None:
             current.Router.exportLogs()
             current = current.next
+
+        for key in self.routersInactivos.keys():
+            key.exportLogs()
 
 #TESTING -- TESTING -- TESTING
 if __name__ == "__main__":

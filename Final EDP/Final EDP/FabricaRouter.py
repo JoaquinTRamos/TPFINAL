@@ -10,12 +10,16 @@ class FabricaRouters():
         self.n_routers: int = 0
         self.mu = 0
         self.sigma = 0
+        self.limiteRouters:int = 100000
+
+    def set_limite_routers(self, limite_routers:int) -> None:
+        self.limiteRouters = limite_routers
 
     def __tiempo_aleatorio(self) -> int:
         return abs(round(r.normalvariate(self.mu, self.sigma), 0))
     
     def __tiempoEntreRouters(self) -> None: # Esto devolvera la cantidad de tiempo para que llegue un nuevo router
-        self.tiempoParaProxRouter = self.__tiempo_aleatorio() #TODO poner mu y sigma acordes
+        self.tiempoParaProxRouter = self.__tiempo_aleatorio()
      
     def __descontarTiempo(self, tiempoPorTick:int) -> None: # Esta funcion ajusta la cantidad de tiempo entre c/tick
         self.tiempoParaProxRouter -= tiempoPorTick
@@ -34,9 +38,10 @@ class FabricaRouters():
         from RoutingSim import instance
         instance.routerManager.addRouter(self.fabricarRouter())
 
+    @retry
     def fabricarRouter(self) -> Router: # Esta seria la funcion que se callea por tick
     
-        coordenada = r.randint(1,1000000) # TODO PUEDEN REPETIR, CAUSARIA ERROR IMPLEMENTAR ALGO PARA PREVENIR
+        coordenada = r.randint(1,self.limiteRouters) # TODO PUEDEN REPETIR, CAUSARIA ERROR IMPLEMENTAR ALGO PARA PREVENIR
         nuevoRouter = Router(coordenada = coordenada)
         self.n_routers += 1
 
@@ -45,14 +50,22 @@ class FabricaRouters():
     
     def set_routers(self, cant_routers:int) -> None:
         for i in range(cant_routers):
-            coordenada = r.randint(1,100000) # TODO PUEDEN REPETIR, CAUSARIA ERROR IMPLEMENTAR ALGO PARA PREVENIR
+            self.buildRouter()
+        self.__tiempoEntreRouters()
+
+    @retry
+    def buildRouter(self):
+
+            coordenada = r.randint(1,self.limiteRouters)
             nuevoRouter = Router(coordenada = coordenada)
             self.n_routers += 1
             
             from RoutingSim import instance
-            instance.routerManager.addRouter(nuevoRouter)
-
-        self.__tiempoEntreRouters()
+            from RouterManager import DuplicateRouterException
+            try:
+                instance.routerManager.addRouter(nuevoRouter)
+            except DuplicateRouterException:
+                print('ss')
 
     def set_timer(self, mu: int, sigma:int) -> None:
         self.mu = mu
