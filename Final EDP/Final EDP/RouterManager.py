@@ -98,6 +98,7 @@ class RouterManager():
         if timer == 0:
             self.addRouter(router)
             self.routersInactivos.pop(router)
+            router.set_estado(RouterEstado.ACTIVO)
 
     def enviarMensajesTick(self, tiempoPorTick:int)-> None:
         #Funcion que debe ser ejecutada una vez por tick

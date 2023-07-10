@@ -14,13 +14,17 @@ class RouterEstado(Enum):
 class Router():
     def __init__(self, coordenada):
             self.coordenada:int = coordenada
-            self.estado:RouterEstado = RouterEstado.AGREGADO
+            self.estado:RouterEstado = self.set_estado(RouterEstado.AGREGADO)
             self.cola_propios:Cola = Cola()
             self.cola_transmitir: ColaTransmitir = ColaTransmitir()
             self.logsMensajes:dict = {}
             self._timer: int = 0
             self.propiosProcesados: int = 0
             self.transmicionProcesados : int = 0
+
+            # Se vuelve a llamar a set_estado para automaticamente pasar a estado activo 
+            # El estado agregado es algo momentaneo cuando se crea el router y pasa en el mismo momento a activo
+            self.set_estado(RouterEstado.ACTIVO)
 
     def get_coordenada(self):
         return self.coordenada
@@ -34,6 +38,8 @@ class Router():
     def set_estado(self, estado: RouterEstado) -> None:
         # AGREGAR LOGICA DE GUARDADO DE LOGS
         # deberia enviar cada cambio de logs a una clase que se encargue de guardarlos
+        # tiene que tener registro del Tick actual para poder guardar el log con el tiempo correspondiente
+
         self.estado = estado
 
 
@@ -98,8 +104,6 @@ class Router():
         with open("ROUTER_{}.txt".format(self.coordenada), "w") as f:
             for values in self.logsMensajes.values():
                 f.write(str(values.origen) + "-" + str(values.mensaje) + "\n")
-
-
 
     def __str__(self):
         return "Coordenada: " + str(self.coordenada) + "\nEstado: " + str(self.estado) + "\nCola Propios: " + str(self.cola_propios) + "\nCola Retransmitir: " + str(self.cola_retransmitir) + "\n"
