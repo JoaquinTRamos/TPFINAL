@@ -3,7 +3,7 @@ class Metadata():
 
     def __init__(self, origen:int, destino: int) -> None:
         from RoutingSim import instance
-        self.timestamp = instance.timeManager.get_tiempoPaquete()
+        self.timestamp = instance.timeManager.get_timestamp()
         self.origen = origen
         self.destino = destino
         
