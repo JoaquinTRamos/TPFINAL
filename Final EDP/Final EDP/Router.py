@@ -42,6 +42,15 @@ class Router():
 
         self.estado = estado
 
+        # de esta manera no se estan guardando los logs en el mismo objeto SystemLogs
+        # se esta creando una instancia nueva cada vez que se llama a set_estado
+        # ver como arreglarlo para no generar imports circulares
+
+        # ademas --> tick debe ser cambiado por el numero actual de tick
+        tick = 0
+        from SystemLogs import SystemLogs
+        SystemLogs.addLog(estado, self, tick)
+
 
     def requestPaquete(self) -> None:
         # Solicitar un paquete con origen propio para enviar a otro router -> Es un NUEVO paquete
