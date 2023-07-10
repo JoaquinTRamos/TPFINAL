@@ -1,4 +1,5 @@
 # implement a linked list
+from re import I
 from Router import Router
 from random import randint
 from FabricaRouter import *
@@ -22,6 +23,7 @@ class RouterManager():
     def __init__(self) -> None:
         self.head = None
         self.routersCoordenates = set()
+        self.routersInactivos = dict()
         self.fabricaRouter = FabricaRouters()
 
     def addRouter(self, nuevoRouter:Router) -> None:
@@ -76,11 +78,26 @@ class RouterManager():
 
     def checkearCaidaTick(self, tiempoPorTick:int) -> None:
         if(randint(1,10) < 2):
+            # Hace una tirada, si se cumple, pide un router al azar y lo desactiva
+            # Para desactivarlo, lo saca de la lista de routers activos y lo agrega a la lista de routers inactivos
+            # El router inactivo tiene un timer que se decrementa cada tick, cuando llega a 0, se rehabilita
+
             router = self.getRandomAvailableRouter()
             router.desactivarRouter(self.removeRouter)
-            # TODO aca continuar logica de agregar a otro set
+            self.routersCoordenates.pop(router.coordenada)
+            self.routersInactivos[router] = router._timer
         
-        # TODO cualquiera que se encuentra en el set desactivado pasar tick para restar tiempo inactivo
+    def rehabilitacionRoutersTick(self, tiempoPorTick:int) -> None:
+        # Por cada tick que pasa, decrementa el timer de cada router inactivo
+        # Si el timer llega a 0, rehabilita el router y lo agrega a la lista de routers activos
+
+        for router,timer in self.routersInactivos.items():
+            self.routersInactivos[router] -=1
+        if router.estado == RouterEstado.INACTIVO:
+            router.set_estado(RouterEstado.EN_RESET)
+        if timer == 0:
+            self.addRouter(router)
+            self.routersInactivos.pop(router)
 
     def enviarMensajesTick(self, tiempoPorTick:int)-> None:
         #Funcion que debe ser ejecutada una vez por tick

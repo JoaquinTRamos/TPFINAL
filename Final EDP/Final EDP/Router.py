@@ -32,6 +32,8 @@ class Router():
         return self.cola_retransmitir
 
     def set_estado(self, estado: RouterEstado) -> None:
+        # AGREGAR LOGICA DE GUARDADO DE LOGS
+        # deberia enviar cada cambio de logs a una clase que se encargue de guardarlos
         self.estado = estado
 
 
@@ -76,7 +78,12 @@ class Router():
     # TODO nueva funcion que descuenta tiempo de self._timer -> si timer < 1 entonces cambiar de estado.
 
     def desactivarRouter(self, callback: Callable[["Router"],None]) -> None:
-        self.estado = RouterEstado.INACTIVO
+
+        # Uso la funcion SET_ESTADO para tener un metodo unificado de cambiar los estados de los routers
+        # Esto facilita el guardado de logs
+
+        self.set_estado(RouterEstado.INACTIVO)
+        # ---- ---- ---- ---- ---- ---- ---- ---- ---- LEER COMENTARIO DE ARRIBA
         self._timer = randint(50,100)
         callback(self)
 
