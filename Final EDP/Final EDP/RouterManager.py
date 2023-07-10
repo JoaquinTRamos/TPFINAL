@@ -76,8 +76,11 @@ class RouterManager():
                 current = current.next
 
             if current.prev is None:
-                self.head = current.next
-                self.head.prev = None
+                if current.next is None:
+                    self.head = None
+                else:
+                    self.head = current.next
+                    self.head.prev = None
             elif current.next is None:
                 current.prev.next = None
             else:
@@ -85,8 +88,9 @@ class RouterManager():
                 current.next.prev = current.prev
 
     # simulacion de pedidos de paquetes
-    def requestPaquete(self) -> None:       
-        self.getRandomAvailableRouter().requestPaquete()
+    def requestPaquete(self) -> None:
+        if(len(self.routersCoordenates) > 1):
+            self.getRandomAvailableRouter().requestPaquete()
 
     # simulacion de caidas
     def checkearCaidaTick(self, tiempoPorTick:int) -> None:
@@ -106,6 +110,9 @@ class RouterManager():
         # Por cada tick que pasa, decrementa el timer de cada router inactivo
         # Si el timer llega a 0, rehabilita el router y lo agrega a la lista de routers activos
 
+        if(len(self.routersInactivos) == 0):
+            return None
+
         for router,timer in self.routersInactivos.items():
             self.routersInactivos[router] -=1
         if router.estado == RouterEstado.INACTIVO:
@@ -123,9 +130,9 @@ class RouterManager():
 
         #numero random entre 1 y la cantidad de routers
         x = randint(1,cantidadRouters)
-        
+        print(f"{x}, {cantidadRouters}")
         current = self.head
-        for i in range(0,x):
+        for i in range(x):
             if(current.next == None):
                 break
             current = current.next

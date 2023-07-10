@@ -50,7 +50,6 @@ class Router():
         from RoutingSim import instance
         instance.systemLogs.addLog(estado, self, instance.timeManager.get_timestamp())
 
-
     def requestPaquete(self) -> None:
         # Solicitar un paquete con origen propio para enviar a otro router -> Es un NUEVO paquete
         from RoutingSim import instance

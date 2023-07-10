@@ -10,14 +10,16 @@ class RoutingSim():
         self.paqueteManager = PaqueteManager()
         self.routerManager = RouterManager()
         self.systemLogs = SystemLogs()
+        
         self.suscribir_acciones()
         pass
 
     def suscribir_acciones(self) -> None: # Aca se establece el orden para el evento de on_tick
         self.timeManager.subscribir_accion(self.routerManager.contarTicksFabricaRouter)
         self.timeManager.subscribir_accion(self.paqueteManager.contarTicksFabricaPaquete)
-        self.timeManager.subscribir_accion(self.routerManager.checkearCaidaTick)
         self.timeManager.subscribir_accion(self.routerManager.enviarMensajesTick)
+        self.timeManager.subscribir_accion(self.routerManager.checkearCaidaTick)
+        self.timeManager.subscribir_accion(self.routerManager.rehabilitacionRoutersTick)
 
     # Metodo para reiniciar la simulacion
     def reset(self) -> None:
