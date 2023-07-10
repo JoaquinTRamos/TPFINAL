@@ -61,7 +61,8 @@ class RouterManager():
                     current.prev = newNode
                 else:
                     current.prev = newNode
-                    newNode.next = current   
+                    newNode.next = current
+                    self.head = newNode   
             
                   
     def removeRouter(self, bajaRouter:Router) -> None:
@@ -122,7 +123,7 @@ class RouterManager():
 
         #numero random entre 1 y la cantidad de routers
         x = randint(1,cantidadRouters)
-
+        
         current = self.head
         for i in range(0,x):
             if(current.next == None):
@@ -143,17 +144,23 @@ class RouterManager():
             paquete = current.Router.dequeuePaquete()
 
             # Si el paquete es None, significa que no hay paquetes en la cola de ese router
-            if paquete == None:
-                continue
-            # Si el paquete tiene como destino una coordenada mayor lo paso al next router (Router de la derecha)
-            elif paquete.metadata.destino > current.Router.coordenada:
-                current.next.Router.enqueuePaquete(paquete)
-                continue
-            # Si el paquete tiene como destino una coordenada menor lo paso al prev router (Router de la izquierda)
-            elif paquete.metadata.destino < current.Router.coordenada:
-                current.prev.Router.enqueuePaquete(paquete)
+            if paquete != None:
+                # Si el paquete tiene como destino una coordenada mayor lo paso al next router (Router de la derecha)
+                if paquete.metadata.destino > current.Router.coordenada:
+                    current.next.Router.enqueuePaquete(paquete)
+                    current = current.next
+                    continue
+                # Si el paquete tiene como destino una coordenada menor lo paso al prev router (Router de la izquierda)
+                elif paquete.metadata.destino < current.Router.coordenada:
+                    current.prev.Router.enqueuePaquete(paquete)
 
             # Continuo el ciclo
+            current = current.next
+    
+    def exportLogs(self) -> None:
+        current = self.head
+        while current != None:
+            current.Router.exportLogs()
             current = current.next
 
 #TESTING -- TESTING -- TESTING

@@ -30,5 +30,5 @@ class SystemLogs():
                 # TO DO --> Cambiar el tick por el tiempo transcurrido desde el inicio de la simulacion
                 #           Hay que tomar el timestamp cuando arranco la simulacion y sumar los ticks
 
-                writer.writerow({'router':router, 'tick': log.tick, 'estado': log.estado})
+                writer.writerow({'router':router, 'tick': str(log.tick), 'estado': str(log.estado)})
 

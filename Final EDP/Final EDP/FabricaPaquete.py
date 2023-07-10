@@ -37,8 +37,9 @@ class FabricaPaquetes():
         destino:int = instance.routerManager.getRandomAvailableRouter().coordenada
         while destino == origen:
             destino = instance.routerManager.getRandomAvailableRouter().coordenada
+            # print(f"{destino} <- {origen}")
         
-        nuevoPaquete = Paquete(Id = self.n_paquetes, metadata= Metadata(origen=origen,destino=destino)) 
+        nuevoPaquete = Paquete(id = self.n_paquetes, metadata= Metadata(origen=origen,destino=destino)) 
         self.n_paquetes += 1
 
         self.__tiempoEntrePaquetes() 

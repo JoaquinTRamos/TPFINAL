@@ -28,11 +28,11 @@ class RoutingSim():
         # Set-up <-- Cantidad de routers para arrancar simulacion, mu sigma de paquete y router, tiempo simulacion, % caida routers
         self.timeManager.set_tiempo_simulacion(tiempo*10)
         print("SET_TIEMPO_SIMULACION HECHO")
-        self.routerManager.fabricaRouter.set_timer(mu_router,sigma_router)
+        self.routerManager.fabricaRouter.set_timer(mu_router*10,sigma_router*10)
         print("SET_FABRICA_ROUTER_TIMER HECHO")
         self.routerManager.fabricaRouter.set_routers(cant_routers)
         print("SET_FABRICA_ROUTER_ROUTERS HECHO")
-        self.paqueteManager.fabricaPaquete.set_timer(mu_paquete,sigma_paquete)
+        self.paqueteManager.fabricaPaquete.set_timer(mu_paquete*10,sigma_paquete*10)
         print("SET_FABRICA_PAQUETE_TIMER HECHO")
         self.routerManager.set_prob_caida(porcentaje_caida_router)
         print("SET_PROB_CAIDA HECHO")
@@ -41,13 +41,12 @@ class RoutingSim():
         # Agarra el tiempo
         print("COMIENZA_SIMULACION")
         while self.timeManager.get_tiempo_simulacion() >= 0:
-            print("PROX_TICK")
             self.timeManager.next_tick()
         
+        print("SIMULACION TERMINADA")
         # Recoleccion / Visualizacion de Informacion
         self.systemLogs.exportLogs()
+        self.routerManager.exportLogs()
 
 instance = RoutingSim()
 
-instance.iniciar(cant_routers=4, mu_router= 0, sigma_router=0, mu_paquete=2, sigma_paquete=1, tiempo=120,\
-                 porcentaje_caida_router=10) # Comienza la simulacion <- Temporal para probar implementacion de tiempo

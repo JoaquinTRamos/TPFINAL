@@ -101,15 +101,15 @@ class Router():
 
 
     # FUNCIONES PARA MANTENER LOS LOGS DE MENSAJES RECIBIDOS
-    def addLogPaquete(self, Paquete: Paquete) -> None:
+    def addLogPaquete(self, paquete: Paquete) -> None:
         # Almacenar el historial de paquetes recibidos -> Se almacena solo los datos relevantes para armar el archivo de logs
-        self.logsMensajes[Paquete.metadata.id] = [Paquete.mensaje, Paquete.metadata.origen]
+        self.logsMensajes[paquete.id] = [paquete.mensaje, paquete.metadata.origen]
     
     def exportLogs(self):
         # Exportar los logs de mensajes recibidos a un archivo de 
         with open("ROUTER_{}.txt".format(self.coordenada), "w") as f:
             for values in self.logsMensajes.values():
-                f.write(str(values.origen) + "-" + str(values.mensaje) + "\n")
+                f.write(str(values[1]) + "-" + str(values[0]) + "\n")
 
     def __str__(self):
         return "Coordenada: " + str(self.coordenada) + "\nEstado: " + str(self.estado) + "\nCola Propios: " + str(self.cola_propios) + "\nCola Retransmitir: " + str(self.cola_retransmitir) + "\n"
