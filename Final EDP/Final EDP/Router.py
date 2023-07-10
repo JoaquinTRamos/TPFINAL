@@ -16,7 +16,7 @@ class Router():
             self.coordenada:int = coordenada
             self.estado:RouterEstado = self.set_estado(RouterEstado.AGREGADO)
             self.cola_propios:Cola = Cola()
-            self.cola_transmitir: ColaTransmitir = ColaTransmitir()
+            self.cola_transmitir: Cola = Cola()
             self.logsMensajes:dict = {}
             self._timer: int = 0
             self.propiosProcesados: int = 0
@@ -46,20 +46,18 @@ class Router():
         self.enqueuePaquete(instance.paqueteManager.fabricaPaquete.fabricarPaquete(self.coordenada))
         pass
 
-    def enqueuePaquete(self, Paquete: Paquete) -> None:
-    # Encolar un paquete -> Si el paquete es propio se encola en la cola de propios.
+    def enqueuePaquete(self, paquete: Paquete) -> None:
+    # Encolar un paquete -> Si el paquete es propio se encola en la cola de propios y se guarda el log.
     #                       Si es para retransmitir se encola en la cola de retransmitir y se guarda el log
     #                       Si es un mensaje para el router se guarda el log
 
-        if Paquete.metadata.origen == self.coordenada:
-            self.cola_propios.encolar(Paquete)
-        elif Paquete.metadata.destino == self.coordenada:
-            # El paquete llego a destino -> Solo guardo el log
-            self.addLogPaquete(Paquete)
-        else:
+        if paquete.metadata.origen == self.coordenada:
+            self.cola_propios.encolar(paquete)
+        elif paquete.metadata.destino != self.coordenada:
             # al ser un mensaje recibido, tiene que guardar el log
-            self.addLogPaquete(Paquete)
-            self.cola_transmitir.encolar(Paquete)
+            self.cola_transmitir.encolar(paquete)
+
+        self.addLogPaquete(paquete)
     
     def dequeuePaquete(self) -> (Paquete|None):
     # Desencola el proximo paquete a enviar -> Si la cola de retransmitir esta vacia se desencola de la cola de propios
@@ -76,7 +74,7 @@ class Router():
                 self.transmicionProcesados += 1
                 return paquete
             except Exception:
-                    return None
+                return None
 
     def desactivarRouter(self, callback: Callable[["Router"],None]) -> None:
 
@@ -91,13 +89,13 @@ class Router():
     # FUNCIONES PARA MANTENER LOS LOGS DE MENSAJES RECIBIDOS
     def addLogPaquete(self, paquete: Paquete) -> None:
         # Almacenar el historial de paquetes recibidos -> Se almacena solo los datos relevantes para armar el archivo de logs
-        self.logsMensajes[paquete.id] = [paquete.mensaje, paquete.metadata.origen]
+        self.logsMensajes[paquete.id] = [paquete.mensaje, paquete.metadata.origen, paquete.metadata.destino]
     
     def exportLogs(self):
         # Exportar los logs de mensajes recibidos a un archivo de 
         with open("ROUTER_{}.txt".format(self.coordenada), "w") as f:
             for values in self.logsMensajes.values():
-                f.write("ROUTER_" + str(values[1]) + "  -   " + str(values[0]) + "\n")
+                f.write("ROUTER_" + str(values[1]) + "  -   " + str(values[2]) + "  -   "+ str(values[0]) + "\n")
 
     def __str__(self):
         return "Coordenada: " + str(self.coordenada) + "\nEstado: " + str(self.estado) + "\nCola Propios: " + str(self.cola_propios) + "\nCola Retransmitir: " + str(self.cola_retransmitir) + "\n"

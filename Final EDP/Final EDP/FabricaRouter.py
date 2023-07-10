@@ -65,7 +65,7 @@ class FabricaRouters():
             try:
                 instance.routerManager.addRouter(nuevoRouter)
             except DuplicateRouterException:
-                print('ss')
+                pass
 
     def set_timer(self, mu: int, sigma:int) -> None:
         self.mu = mu
