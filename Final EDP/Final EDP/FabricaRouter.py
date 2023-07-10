@@ -36,7 +36,7 @@ class FabricaRouters():
 
     def fabricarRouter(self) -> Router: # Esta seria la funcion que se callea por tick
     
-        coordenada = r.randint(1,10) #TODO Implementar cantidad de routers por parametro
+        coordenada = r.randint(1,1000000) # TODO PUEDEN REPETIR, CAUSARIA ERROR IMPLEMENTAR ALGO PARA PREVENIR
         nuevoRouter = Router(coordenada = coordenada)
         self.n_routers += 1
 
@@ -45,7 +45,7 @@ class FabricaRouters():
     
     def set_routers(self, cant_routers:int) -> None:
         for i in range(cant_routers):
-            coordenada = r.randint(1,10) #TODO Implementar cantidad de routers por parametro
+            coordenada = r.randint(1,100000) # TODO PUEDEN REPETIR, CAUSARIA ERROR IMPLEMENTAR ALGO PARA PREVENIR
             nuevoRouter = Router(coordenada = coordenada)
             self.n_routers += 1
             

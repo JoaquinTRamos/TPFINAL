@@ -47,9 +47,8 @@ class Router():
         # ver como arreglarlo para no generar imports circulares
 
         # ademas --> tick debe ser cambiado por el numero actual de tick
-        tick = 0
-        from SystemLogs import SystemLogs
-        SystemLogs.addLog(estado, self, tick)
+        from RoutingSim import instance
+        instance.systemLogs.addLog(estado, self, instance.timeManager.get_timestamp())
 
 
     def requestPaquete(self) -> None:
@@ -89,8 +88,6 @@ class Router():
                 return paquete
             except Exception:
                     return None
-
-    # TODO nueva funcion que descuenta tiempo de self._timer -> si timer < 1 entonces cambiar de estado.
 
     def desactivarRouter(self, callback: Callable[["Router"],None]) -> None:
 

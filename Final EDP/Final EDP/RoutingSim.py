@@ -1,6 +1,7 @@
 from TimeManager import TimeManager
 from PaqueteManager import PaqueteManager
 from RouterManager import RouterManager
+from SystemLogs import SystemLogs
 
 # Esta clase representa la simulacion entera, y ante cualquier consulta sobre los managers debera pasar por la instancia "instance".
 class RoutingSim():
@@ -8,7 +9,7 @@ class RoutingSim():
         self.timeManager = TimeManager()
         self.paqueteManager = PaqueteManager()
         self.routerManager = RouterManager()
-        # Atributo de tiempo de inicio de simulacion
+        self.systemLogs = SystemLogs()
         self.suscribir_acciones()
         pass
 
@@ -26,16 +27,27 @@ class RoutingSim():
                     porcentaje_caida_router:int) -> None:
         # Set-up <-- Cantidad de routers para arrancar simulacion, mu sigma de paquete y router, tiempo simulacion, % caida routers
         self.timeManager.set_tiempo_simulacion(tiempo*10)
+        print("SET_TIEMPO_SIMULACION HECHO")
         self.routerManager.fabricaRouter.set_timer(mu_router,sigma_router)
+        print("SET_FABRICA_ROUTER_TIMER HECHO")
         self.routerManager.fabricaRouter.set_routers(cant_routers)
+        print("SET_FABRICA_ROUTER_ROUTERS HECHO")
+        self.paqueteManager.fabricaPaquete.set_timer(mu_paquete,sigma_paquete)
+        print("SET_FABRICA_PAQUETE_TIMER HECHO")
+        self.routerManager.set_prob_caida(porcentaje_caida_router)
+        print("SET_PROB_CAIDA HECHO")
         self.timeManager.set_tiempo_inicio() # Esta tiene que ser el ultima set up
-
+        print("SET_TIEMPO_INICIO HECHO")
         # Agarra el tiempo
+        print("COMIENZA_SIMULACION")
         while self.timeManager.get_tiempo_simulacion() >= 0:
+            print("PROX_TICK")
             self.timeManager.next_tick()
         
         # Recoleccion / Visualizacion de Informacion
+        self.systemLogs.exportLogs()
 
 instance = RoutingSim()
 
-instance.iniciar(cant_routers=4, tiempo=10) # Comienza la simulacion <- Temporal para probar implementacion de tiempo
+instance.iniciar(cant_routers=4, mu_router= 0, sigma_router=0, mu_paquete=2, sigma_paquete=1, tiempo=120,\
+                 porcentaje_caida_router=10) # Comienza la simulacion <- Temporal para probar implementacion de tiempo

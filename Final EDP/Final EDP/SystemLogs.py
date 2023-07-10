@@ -1,17 +1,18 @@
 from Router import Router, RouterEstado
 import csv
+from datetime import *
 
 class Log():
-    def __init__(self,estado:RouterEstado,router:Router,tick):
+    def __init__(self, estado:RouterEstado, router:Router, tick: datetime):
         self.estado = estado
         self.router = router
         self.tick = tick
 
 class SystemLogs():
     def __init__(self):
-        self.logs = []
+        self.logs: list[Log] = []
 
-    def addLog(self,estado:RouterEstado,router:Router,tick):
+    def addLog(self, estado:RouterEstado, router:Router, tick:datetime):
         self.logs.append(Log(estado,router,tick))
 
     def exportLogs(self):
@@ -29,7 +30,5 @@ class SystemLogs():
                 # TO DO --> Cambiar el tick por el tiempo transcurrido desde el inicio de la simulacion
                 #           Hay que tomar el timestamp cuando arranco la simulacion y sumar los ticks
 
-                timeStampTick = log.tick
-
-                writer.writerow({'router':router, 'tick': timeStampTick, 'estado': log.estado})
+                writer.writerow({'router':router, 'tick': log.tick, 'estado': log.estado})
 

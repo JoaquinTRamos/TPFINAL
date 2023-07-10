@@ -7,12 +7,14 @@ class FabricaPaquetes():
     def __init__(self) -> None:
         self.tiempoParaProxPaquete: int = 0
         self.n_paquetes: int = 0
+        self.mu = 2
+        self.sigma = 1
     
-    def __tiempo_aleatorio(self, mu: int, sigma: int) -> int:
-        return round(r.normalvariate(mu, sigma), 0)
+    def __tiempo_aleatorio(self) -> int:
+        return round(r.normalvariate(self.mu, self.sigma), 0)
     
     def __tiempoEntrePaquetes(self) -> None: # Esto devolvera la cantidad de tiempo para que llegue un nuevo paquete
-        self.tiempoParaProxPaquete = self.__tiempo_aleatorio() #TODO poner mu y sigma acordes
+        self.tiempoParaProxPaquete = self.__tiempo_aleatorio()
      
     def __descontarTiempo(self, tiempoPorTick:int) -> None: # Esta funcion ajusta la cantidad de tiempo entre c/tick
         self.tiempoParaProxPaquete -= tiempoPorTick
@@ -41,6 +43,10 @@ class FabricaPaquetes():
 
         self.__tiempoEntrePaquetes() 
         return nuevoPaquete
+    
+    def set_timer(self, mu: int, sigma:int) -> None:
+        self.mu = mu
+        self.sigma = sigma
     
     
     def __str__(self) -> str:

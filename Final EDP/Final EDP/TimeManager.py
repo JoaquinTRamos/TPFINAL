@@ -20,7 +20,7 @@ class TimeManager():
         self._tick: Tick = Tick()
         self._tiempo_simulacion: int = 0
         self._tiempo_total: int = 0
-        self.tiempo_inicio: datetime
+        self.tiempo_inicio: datetime = datetime.now()
         pass
 
     def subscribir_accion(self, accion: Callable[[int],None]) -> None: # Cambiar typing de accion si necesitamos Input/Output distintos
@@ -45,7 +45,7 @@ class TimeManager():
         self.tiempo_inicio = datetime.now()
     
     def get_timestamp(self) -> datetime:
-        tiempoPaquete = self.tiempo_inicio + timedelta(milliseconds = (self.get_current_tick * 100))
+        tiempoPaquete = self.tiempo_inicio + timedelta(milliseconds = (self.get_current_tick() * 100))
         return tiempoPaquete.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
         
      
