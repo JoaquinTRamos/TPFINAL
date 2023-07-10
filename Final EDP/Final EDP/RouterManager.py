@@ -100,8 +100,9 @@ class RouterManager():
             # El router inactivo tiene un timer que se decrementa cada tick, cuando llega a 0, se rehabilita
 
             router = self.getRandomAvailableRouter()
-            router.desactivarRouter(self.removeRouter)
-            self.routersInactivos[router] = router._timer
+            if router is not None:
+                router.desactivarRouter(self.removeRouter)
+                self.routersInactivos[router] = router._timer
 
     def set_prob_caida(self, prob_caida:int) -> None:
         self.prob_caida = prob_caida
@@ -129,10 +130,17 @@ class RouterManager():
         cantidadRouters = len(self.routersCoordenates)
 
         #numero random entre 1 y la cantidad de routers
-        x = randint(1,cantidadRouters)
+        
+        if cantidadRouters == 0:
+            return None
+        elif cantidadRouters == 1:
+            return self.head.Router
+        else:    
+            x = randint(1,cantidadRouters)
+
         print(f"{x}, {cantidadRouters}")
         current = self.head
-        for i in range(x):
+        for i in range(x-1):
             if(current.next == None):
                 break
             current = current.next
