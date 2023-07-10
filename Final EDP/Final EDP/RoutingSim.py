@@ -28,7 +28,7 @@ class RoutingSim():
         self.timeManager.set_tiempo_simulacion(tiempo*10)
         self.routerManager.fabricaRouter.set_timer(mu_router,sigma_router)
         self.routerManager.fabricaRouter.set_routers(cant_routers)
-        
+        self.timeManager.set_tiempo_inicio() # Esta tiene que ser el ultima set up
 
         # Agarra el tiempo
         while self.timeManager.get_tiempo_simulacion() >= 0:

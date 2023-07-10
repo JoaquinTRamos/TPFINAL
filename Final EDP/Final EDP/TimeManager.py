@@ -20,6 +20,7 @@ class TimeManager():
         self._tick: Tick = Tick()
         self._tiempo_simulacion: int = 0
         self._tiempo_total: int = 0
+        self.tiempo_inicio: datetime
         pass
 
     def subscribir_accion(self, accion: Callable[[int],None]) -> None: # Cambiar typing de accion si necesitamos Input/Output distintos
@@ -40,8 +41,11 @@ class TimeManager():
         self._tiempo_simulacion -= self._tick.tiempoPorTick
         self._tick.on_tick(self._tick.tiempoPorTick) # Si quiero que haya algun input para el evento entonces debemos pasar aca eso
 
-    def get_tiempoPaquete(self, tiempoinicio = datetime.now()) -> datetime:
-        tiempoPaquete = tiempoinicio + timedelta(milliseconds = (self.get_current_tick * 100))
+    def set_tiempo_inicio(self) -> None:
+        self.tiempo_inicio = datetime.now()
+    
+    def get_timestamp(self) -> datetime:
+        tiempoPaquete = self.tiempo_inicio + timedelta(milliseconds = (self.get_current_tick * 100))
         return tiempoPaquete.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
         
      
