@@ -20,8 +20,9 @@ class Router():
             self.cola_transmitir: Cola = Cola()
             self.logsMensajes:dict = {}
             self._timer: int = 0
-            self.propiosProcesados: int = 0
+            self.paquetesRecibidoFinal: int = 0
             self.transmicionProcesados : int = 0
+            self.propiosProcesados: int = 0
 
             # Se vuelve a llamar a set_estado para automaticamente pasar a estado activo 
             # El estado agregado es algo momentaneo cuando se crea el router y pasa en el mismo momento a activo
@@ -58,7 +59,7 @@ class Router():
             # al ser un mensaje recibido, tiene que guardar el log
             self.cola_transmitir.encolar(paquete)
         elif paquete.metadata.destino == self.coordenada:
-            self.propiosProcesados += 1
+            self.paquetesRecibidoFinal += 1
 
         self.addLogPaquete(paquete)
 
@@ -76,6 +77,7 @@ class Router():
         if len(self.cola_transmitir) == 0:
             try:
                 paquete = self.cola_propios.desencolar()
+                self.propiosProcesados += 1
                 return paquete
             except Exception:
                 return None

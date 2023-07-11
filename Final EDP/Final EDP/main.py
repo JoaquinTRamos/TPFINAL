@@ -1,6 +1,9 @@
 from RoutingSim import instance
 import os
 import sys
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd 
 
 class App():
     def __init__(self) -> None:
@@ -11,6 +14,8 @@ class App():
         self.sigma_paquete = 0
         self.tiempo = 0
         self.porcentaje_caida_router = 0
+
+        self.resultadoDict = 0
         pass
 
 
@@ -115,21 +120,56 @@ class App():
         while response != "Y" or response != "N":
             if  response == "Y":
                 os.system("cls")
-                instance.iniciar(cant_routers=self.cant_routers, mu_router=self.mu_router, sigma_router=self.sigma_router, mu_paquete= self.mu_paquete,\
+                self.resultadoDict = instance.iniciar(cant_routers=self.cant_routers, mu_router=self.mu_router, sigma_router=self.sigma_router, mu_paquete= self.mu_paquete,\
                                 sigma_paquete=self.sigma_paquete, tiempo=self.tiempo, porcentaje_caida_router= self.porcentaje_caida_router)
                 
-                # TODO: Aca se debe implementar la visualizacion de las tasas.
                 print("Para encontrar los resultados de la simulacion, dirigase a la carpeta Logs.")
+                
+                self.resultadoDict = np.sort(self.resultadoDict, order="routerCoord")
+                
+                self.visualizarTasas()
+                self.visualizarGrafico()
                 sys.exit()
             
             elif response == "N":
                 os.system("cls")
                 self.setUpSim()
+    
+    def visualizarGrafico(self) -> None:
+
+        coordenadas = tuple([str(i) for i in list(self.resultadoDict["routerCoord"])])
+        totalReenviados = list(self.resultadoDict["transmiciones"])
+        totalRecibidoFinal = list(self.resultadoDict["recibidos"])
+        totalEnviados = list(self.resultadoDict["propios"])
+
+        data = pd.DataFrame({
+            "Enviados": totalEnviados,
+            "Recibidos": totalRecibidoFinal,
+            "Transmitidos": totalReenviados
+        }, index= coordenadas)
+
+        plt.bar(data.index, data.Enviados + data.Recibidos + data.Transmitidos, label="Enviados")
+        plt.bar(data.index, data.Recibidos + data.Transmitidos, label="Recibidos")
+        plt.bar(data.index, data.Transmitidos, label="Transmitidos")
+
+        plt.xticks(rotation = -45)
+
+        plt.legend(loc="best")
+        
+        plt.show()
+
+
+
+    
+    def visualizarTasas(self) -> None:
+
+        totalReenviados = self.resultadoDict["transmiciones"].sum()
+        totalRecibidoFinal = self.resultadoDict["recibidos"].sum()
+        
+        for i in range(len(self.resultadoDict)):
+            print(f"ROUTER_{self.resultadoDict[i][0]} = Reenviados: {self.resultadoDict[i][1]}, {round(self.resultadoDict[i][1]/totalReenviados*100,2)}%; Recepcion Final: {self.resultadoDict[i][2]}, {round(self.resultadoDict[i][2]/totalRecibidoFinal*100,2)}%")
 
 
 app = App()
 
 app.start()
-
-# instance.iniciar(cant_routers=3, mu_router=0, sigma_router=0, mu_paquete=0, sigma_paquete=0, tiempo=360,\
-#                 porcentaje_caida_router=25) # Comienza la simulacion <- Temporal para probar implementacion de tiempo

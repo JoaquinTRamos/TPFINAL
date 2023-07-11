@@ -113,8 +113,10 @@ class RouterManager():
             if router is not None:
                 router.desactivarRouter(self.removeRouter)
                 self.routersInactivos[router] = router._timer
+                
     def set_prob_caida(self, prob_caida:int) -> None:
         self.prob_caida = prob_caida
+
     def rehabilitacionRoutersTick(self, tiempoPorTick:int) -> None:
         # Por cada tick que pasa, decrementa el timer de cada router inactivo
         # Si el timer llega a 0, rehabilita el router y lo agrega a la lista de routers activos
