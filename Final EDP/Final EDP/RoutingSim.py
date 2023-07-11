@@ -40,7 +40,7 @@ class RoutingSim():
         while self.timeManager.get_tiempo_simulacion() >= 0:
             self.timeManager.next_tick()
         
-        print("SIMULACION TERMINADA")
+        print("SIMULACION TERMINADA\n")
         # Recoleccion / Visualizacion de Informacion
         self.systemLogs.exportLogs()
         self.routerManager.exportAllRouterLogs()
