@@ -120,12 +120,12 @@ class App():
         while response != "Y" or response != "N":
             if  response == "Y":
                 os.system("cls")
-                try:
-                    self.resultadoDict = instance.iniciar(cant_routers=self.cant_routers, mu_router=self.mu_router, sigma_router=self.sigma_router, mu_paquete= self.mu_paquete,\
-                                sigma_paquete=self.sigma_paquete, tiempo=self.tiempo, porcentaje_caida_router= self.porcentaje_caida_router)
-                except Exception:
-                    print("Error: No se pudo iniciar la simulacion. Porfavor intente de nuevo.")
-                    sys.exit()
+                # try:
+                self.resultadoDict = instance.iniciar(cant_routers=self.cant_routers, mu_router=self.mu_router, sigma_router=self.sigma_router, mu_paquete= self.mu_paquete,\
+                            sigma_paquete=self.sigma_paquete, tiempo=self.tiempo, porcentaje_caida_router= self.porcentaje_caida_router)
+                # except Exception:
+                #     print("Error: No se pudo iniciar la simulacion. Porfavor intente de nuevo.")
+                #     sys.exit()
 
                 print("Para encontrar los resultados de la simulacion, dirigase a la carpeta Logs.")
                 
