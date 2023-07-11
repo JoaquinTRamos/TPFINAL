@@ -60,8 +60,8 @@ class Router():
             self.cola_transmitir.encolar(paquete)
         elif paquete.metadata.destino == self.coordenada:
             self.paquetesRecibidoFinal += 1
-
-        self.addLogPaquete(paquete)
+            self.addLogPaquete(paquete)
+        
 
     def reEnqueuePaquete(self, paquete: Paquete) -> None:
         # Funcion para reencolar paquetes que no pudeieron ser enviados
@@ -107,11 +107,20 @@ class Router():
 
     def exportLogs(self):
         # Exportar los logs de mensajes recibidos a un archivo de 
+        
+        lista = []
+        for key in self.logsMensajes.keys():
+            lista.append(key)
+
+        # Ordeno la lista con los IDs de paquete -> Id autogenerado unico del sistema
+        # Permite que los paquetes esten ordenados en funcion del momento de creacion y no de recepcion
+
+        lista.sort(reverse=False)
 
         with open("Final EDP/Final EDP/Logs/routerLogs/ROUTER_{}.txt".format(self.coordenada), "w") as f:
-            for values in self.logsMensajes.values():
+            for idPaquete in lista:
                 #f.write("ROUTER_" + str(values[1]) + "  -   " + str(values[2]) + "  -   "+ str(values[0]) + "\n")
-                f.write("ROUTER_" + str(values[1]) + "  -   "+ str(values[0]) + "\n")
+                f.write("ROUTER_" + str(self.logsMensajes[idPaquete][1]) + "  -   " + str(idPaquete) + "  -   "+ str(self.logsMensajes[idPaquete][0]) + "\n")
 
 
     def __str__(self):

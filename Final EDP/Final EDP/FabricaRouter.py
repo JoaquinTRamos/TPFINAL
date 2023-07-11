@@ -41,8 +41,8 @@ class FabricaRouters():
         try:
             newRouter = self.fabricarRouter()
             instance.routerManager.addRouter(newRouter)
-            newRouter.set_estado(RouterEstado.AGREGADO)
-            newRouter.set_estado(RouterEstado.ACTIVO)
+            newRouter.set_estado(RouterEstado.AGREGADO)            
+            newRouter.set_estado(RouterEstado.ACTIVO)            
         except DuplicateRouterException:
             pass
     @retry
@@ -71,6 +71,9 @@ class FabricaRouters():
             from RouterManager import DuplicateRouterException
             try:
                 instance.routerManager.addRouter(nuevoRouter)
+                nuevoRouter.set_estado(RouterEstado.AGREGADO)            
+                nuevoRouter.set_estado(RouterEstado.ACTIVO)            
+
             except DuplicateRouterException:
                 pass
 

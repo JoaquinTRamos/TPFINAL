@@ -167,13 +167,6 @@ class RouterManager():
         while current != None:
             # Le pido al current router el proximo paquete a enviar
 
-
-            # BUG - Si el router destino esta desactivado y el router actual esta a su izquierda o derecha el programa falla
-            # Se soluciona haciendo un try catch y en el catch hay que encolar el paquete nuevamente para que no se pierda
-            # el problema de hacerlo asi es que el paquete quedaria al final de la cola
-
-
-
             paquete = current.Router.dequeuePaquete()
 
             # Si el paquete es None, significa que no hay paquetes en la cola de ese router
