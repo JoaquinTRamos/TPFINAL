@@ -57,15 +57,25 @@ class Router():
         elif paquete.metadata.destino != self.coordenada:
             # al ser un mensaje recibido, tiene que guardar el log
             self.cola_transmitir.encolar(paquete)
+        elif paquete.metadata.destino == self.coordenada:
+            self.propiosProcesados += 1
 
         self.addLogPaquete(paquete)
+
+    def reEnqueuePaquete(self, paquete: Paquete) -> None:
+        # Funcion para reencolar paquetes que no pudeieron ser enviados
+
+        if paquete.metadata.origen == self.coordenada:
+            self.cola_propios.encolar(paquete)
+        elif paquete.metadata.destino != self.coordenada:
+            # al ser un mensaje recibido, tiene que guardar el log
+            self.cola_transmitir.encolar(paquete)
     
     def dequeuePaquete(self) -> (Paquete|None):
     # Desencola el proximo paquete a enviar -> Si la cola de retransmitir esta vacia se desencola de la cola de propios
         if len(self.cola_transmitir) == 0:
             try:
                 paquete = self.cola_propios.desencolar()
-                self.propiosProcesados += 1
                 return paquete
             except Exception:
                 return None
@@ -90,14 +100,17 @@ class Router():
     # FUNCIONES PARA MANTENER LOS LOGS DE MENSAJES RECIBIDOS
     def addLogPaquete(self, paquete: Paquete) -> None:
         # Almacenar el historial de paquetes recibidos -> Se almacena solo los datos relevantes para armar el archivo de logs
-        self.logsMensajes[paquete.id] = [paquete.mensaje, paquete.metadata.origen, paquete.metadata.destino]
-    
+        #self.logsMensajes[paquete.id] = [paquete.mensaje, paquete.metadata.origen, paquete.metadata.destino]
+        self.logsMensajes[paquete.id] = [paquete.mensaje, paquete.metadata.origen]   
+
     def exportLogs(self):
         # Exportar los logs de mensajes recibidos a un archivo de 
 
         with open("Final EDP/Final EDP/Logs/routerLogs/ROUTER_{}.txt".format(self.coordenada), "w") as f:
             for values in self.logsMensajes.values():
-                f.write("ROUTER_" + str(values[1]) + "  -   " + str(values[2]) + "  -   "+ str(values[0]) + "\n")
+                #f.write("ROUTER_" + str(values[1]) + "  -   " + str(values[2]) + "  -   "+ str(values[0]) + "\n")
+                f.write("ROUTER_" + str(values[1]) + "  -   "+ str(values[0]) + "\n")
+
 
     def __str__(self):
         return "Coordenada: " + str(self.coordenada) + "\nEstado: " + str(self.estado) + "\nCola Propios: " + str(self.cola_propios) + "\nCola Retransmitir: " + str(self.cola_retransmitir) + "\n"

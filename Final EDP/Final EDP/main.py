@@ -28,8 +28,8 @@ class App():
         print("Ingresar cantidad de routers al inicio de la simulacion:")
         response = input("-> ")
 
-        while response.isnumeric == False:
-            print("Error: Porfavor ingrese un numero")
+        while response.isnumeric() == False:
+            print("Error: Porfavor ingrese un numero entero")
             response = input("-> ")
 
         self.cant_routers = int(response)
@@ -39,8 +39,8 @@ class App():
         print("Ingresar tiempo, en segundos, promedio entre generacion de cada router:")
         response = input("-> ")
 
-        while response.isnumeric == False:
-            print("Error: Porfavor ingrese un numero")
+        while response.isnumeric() == False:
+            print("Error: Porfavor ingrese un numero entero")
             response = input("-> ")
 
         self.mu_router = int(response)
@@ -49,8 +49,8 @@ class App():
         print("Ingresar tiempo, en segundos, de desvio de la media entre generacion de cada router:")
         response = input("-> ")
 
-        while response.isnumeric == False:
-            print("Error: Porfavor ingrese un numero")
+        while response.isnumeric() == False:
+            print("Error: Porfavor ingrese un numero entero")
             response = input("-> ")
 
         self.sigma_router = int(response)
@@ -60,8 +60,8 @@ class App():
         print("Ingresar tiempo, en segundos, promedio entre generacion de cada paquete:")
         response = input("-> ")
 
-        while response.isnumeric == False:
-            print("Error: Porfavor ingrese un numero")
+        while response.isnumeric() == False:
+            print("Error: Porfavor ingrese un numero entero")
             response = input("-> ")
 
         self.mu_paquete = int(response)
@@ -70,8 +70,8 @@ class App():
         print("Ingresar tiempo, en segundos, de desvio de la media entre generacion de cada paquete:")
         response = input("-> ")
 
-        while response.isnumeric == False:
-            print("Error: Porfavor ingrese un numero")
+        while response.isnumeric() == False:
+            print("Error: Porfavor ingrese un numero entero")
             response = input("-> ")
 
         self.sigma_paquete = int(response)
@@ -80,7 +80,7 @@ class App():
         print("Ingresar tiempo, en segundos, de la simulacion:")
         response = input("-> ")
 
-        while (response.isnumeric == False or int(response) == 0):
+        while (response.isnumeric() == False or int(response) <= 0):
             print("\nError: Porfavor ingrese un numero mayor a 0")
             response = input("-> ")
 
@@ -90,7 +90,7 @@ class App():
         print("Ingresar el denominador del porcentaje de que se caiga un router cada 100ms:")
         response = input("Formato: 1/x -> ")
 
-        while (response.isnumeric == False or int(response) == 0):
+        while (response.isnumeric() == False or int(response) <= 0):
             print("\nError: Porfavor ingrese un numero mayor a 0")
             response = input("Formato: 1/x -> ")
 

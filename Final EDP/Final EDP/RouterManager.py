@@ -191,7 +191,7 @@ class RouterManager():
                     # solo puede ocurrir si un router esta tratando de enviar un mensaje a otro router 
                     # siendo el router al que se le quiere enviar el mensaje el destino del paquete
                     # y ademas el router destino esta desactivado
-                    current.Router.enqueuePaquete(paquete)
+                    current.Router.reEnqueuePaquete(paquete)
             
             # Continuo el ciclo
             current = current.next
