@@ -84,11 +84,14 @@ class RouterManager():
 
             if current.prev is None:
                 if current.next is None:
+                    #lista vacia
                     self.head = None
                 else:
+                    #saco el primero
                     self.head = current.next
                     self.head.prev = None
-            elif current.next is None:
+            elif current.next is None:                
+                #saco el ultimo
                 current.prev.next = None
             else:
                 current.prev.next = current.next
@@ -161,19 +164,35 @@ class RouterManager():
         current = self.head
         while current != None:
             # Le pido al current router el proximo paquete a enviar
+
+
+            # BUG - Si el router destino esta desactivado y el router actual esta a su izquierda o derecha el programa falla
+            # Se soluciona haciendo un try catch y en el catch hay que encolar el paquete nuevamente para que no se pierda
+            # el problema de hacerlo asi es que el paquete quedaria al final de la cola
+
+
+
             paquete = current.Router.dequeuePaquete()
 
             # Si el paquete es None, significa que no hay paquetes en la cola de ese router
             if paquete != None:
-                # Si el paquete tiene como destino una coordenada mayor lo paso al next router (Router de la derecha)
-                if paquete.metadata.destino > current.Router.coordenada:
-                    current.next.Router.enqueuePaquete(paquete)
-                    current = current.next
-                    continue
-                # Si el paquete tiene como destino una coordenada menor lo paso al prev router (Router de la izquierda)
-                elif paquete.metadata.destino < current.Router.coordenada:
-                    current.prev.Router.enqueuePaquete(paquete)
 
+                try:
+                    # Si el paquete tiene como destino una coordenada mayor lo paso al next router (Router de la derecha)
+                    if paquete.metadata.destino > current.Router.coordenada:
+                        current.next.Router.enqueuePaquete(paquete)
+                        current = current.next
+                        continue
+                    # Si el paquete tiene como destino una coordenada menor lo paso al prev router (Router de la izquierda)
+                    elif paquete.metadata.destino < current.Router.coordenada:
+                        current.prev.Router.enqueuePaquete(paquete)
+                except AttributeError:
+                    # es el error que sigifica que next o prev son None
+                    # solo puede ocurrir si un router esta tratando de enviar un mensaje a otro router 
+                    # siendo el router al que se le quiere enviar el mensaje el destino del paquete
+                    # y ademas el router destino esta desactivado
+                    current.Router.enqueuePaquete(paquete)
+            
             # Continuo el ciclo
             current = current.next
     
@@ -209,4 +228,3 @@ if __name__ == "__main__":
     lista.removeRouter(Router(42))
 
     imprimirLista()
-
