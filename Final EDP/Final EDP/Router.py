@@ -1,4 +1,4 @@
-from Cola import ColaTransmitir, Cola
+from Cola import Cola
 from enum import Enum
 from Paquete import Paquete
 from typing import Callable
