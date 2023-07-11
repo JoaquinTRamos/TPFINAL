@@ -123,12 +123,15 @@ class RouterManager():
 
         if(len(self.routersInactivos) == 0):
             return None
-
+        listaPop = []
         for router,timer in self.routersInactivos.items():
             self.routersInactivos[router] -=1
-        if router.estado == RouterEstado.INACTIVO:
-            router.set_estado(RouterEstado.EN_RESET)
-        if timer == 0:
+            if router.estado == RouterEstado.INACTIVO:
+                router.set_estado(RouterEstado.EN_RESET)
+            if timer == 0:
+                listaPop.append(router)
+
+        for router in listaPop:
             self.routersInactivos.pop(router)
             self.addRouter(router)
             router.set_estado(RouterEstado.ACTIVO)
