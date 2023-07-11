@@ -36,12 +36,19 @@ class FabricaRouters():
             return None
     
         from RoutingSim import instance
-        instance.routerManager.addRouter(self.fabricarRouter())
+        from RouterManager import DuplicateRouterException
 
+        try:
+            newRouter = self.fabricarRouter()
+            instance.routerManager.addRouter(newRouter)
+            newRouter.set_estado(RouterEstado.AGREGADO)
+            newRouter.set_estado(RouterEstado.ACTIVO)
+        except DuplicateRouterException:
+            pass
     @retry
     def fabricarRouter(self) -> Router: # Esta seria la funcion que se callea por tick
-    
-        coordenada = r.randint(1,self.limiteRouters) # TODO PUEDEN REPETIR, CAUSARIA ERROR IMPLEMENTAR ALGO PARA PREVENIR
+        coordenada = r.randint(1,self.limiteRouters+2) # TO DO: si se inicia con 0 routers el limite se rompe
+                                                           #: cachear la excepcion de router duplicado
         nuevoRouter = Router(coordenada = coordenada)
         self.n_routers += 1
 
@@ -56,7 +63,7 @@ class FabricaRouters():
     @retry
     def buildRouter(self):
 
-            coordenada = r.randint(1,self.limiteRouters)
+            coordenada = r.randint(1,self.limiteRouters+2)
             nuevoRouter = Router(coordenada = coordenada)
             self.n_routers += 1
             

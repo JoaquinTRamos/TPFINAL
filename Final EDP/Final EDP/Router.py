@@ -9,12 +9,13 @@ class RouterEstado(Enum):
     ACTIVO = 1
     INACTIVO = 2
     EN_RESET = 3
+    FALTA_CHECK = 4
 
 
 class Router():
     def __init__(self, coordenada):
             self.coordenada:int = coordenada
-            self.estado:RouterEstado = self.set_estado(RouterEstado.AGREGADO)
+            self.estado:RouterEstado = RouterEstado.FALTA_CHECK
             self.cola_propios:Cola = Cola()
             self.cola_transmitir: Cola = Cola()
             self.logsMensajes:dict = {}
@@ -24,7 +25,7 @@ class Router():
 
             # Se vuelve a llamar a set_estado para automaticamente pasar a estado activo 
             # El estado agregado es algo momentaneo cuando se crea el router y pasa en el mismo momento a activo
-            self.set_estado(RouterEstado.ACTIVO)
+            
 
     def get_coordenada(self):
         return self.coordenada
@@ -93,7 +94,8 @@ class Router():
     
     def exportLogs(self):
         # Exportar los logs de mensajes recibidos a un archivo de 
-        with open("ROUTER_{}.txt".format(self.coordenada), "w") as f:
+
+        with open("Final EDP/Final EDP/Logs/routerLogs/ROUTER_{}.txt".format(self.coordenada), "w") as f:
             for values in self.logsMensajes.values():
                 f.write("ROUTER_" + str(values[1]) + "  -   " + str(values[2]) + "  -   "+ str(values[0]) + "\n")
 

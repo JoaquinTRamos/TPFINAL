@@ -20,8 +20,8 @@ class SystemLogs():
         # el nombre del archivo debe ser SystemLogs.csv
         # el archivo debe tener 3 columnas: estado, router, tick
 
-        with open('system_log.csv', 'w', newline='') as csvfile:
-            fieldnames = ['router', 'tick', 'estado']
+        with open('Final EDP/Final EDP/Logs/system_log.csv', 'w', newline='') as csvfile:
+            fieldnames = ['Router', 'Timestamp', 'Estado']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             for log in self.logs:
@@ -31,5 +31,5 @@ class SystemLogs():
                 #           Hay que tomar el timestamp cuando arranco la simulacion y sumar los ticks
 
 
-                writer.writerow({'router':router, 'tick': str(log.tick), 'estado': str(log.estado.name)})
+                writer.writerow({'Router':router, 'Timestamp': str(log.tick), 'Estado': str(log.estado.name)})
 

@@ -29,15 +29,26 @@ class RouterManager():
 
     def contarTicksFabricaRouter(self, tiempoPorTick:int) -> None:
         self.fabricaRouter.contarTicks(tiempoPorTick)
+    
+    #Check si el router existe
+    def checkRouterExists(self,coordenates)->bool:
+        if coordenates in self.routersCoordenates:
+            return True
+        
+        for key in self.routersInactivos.keys():
+            if coordenates == key.coordenada:
+                return True
+        return False
+
 
     # agregar y sacar routers
     def addRouter(self, nuevoRouter:Router) -> None:
         newNode = Node(nuevoRouter)
-        if nuevoRouter.coordenada in self.routersCoordenates:
+        #if nuevoRouter.coordenada in self.routersCoordenates or nuevoRouter.coordenada in self.routersInactivosCoordenates:
+        if self.checkRouterExists(nuevoRouter.coordenada) == True:
             raise DuplicateRouterException(nuevoRouter.coordenada)
         else:
             self.routersCoordenates.add(newNode.Router.coordenada)
-
         if self.head is None:
             self.head = newNode
         else:
@@ -59,14 +70,13 @@ class RouterManager():
                 else:
                     current.prev = newNode
                     newNode.next = current
-                    self.head = newNode   
-            
-                  
+                    self.head = newNode               
     def removeRouter(self, bajaRouter:Router) -> None:
         if bajaRouter.coordenada not in self.routersCoordenates:
             raise NonExistingRouterException(bajaRouter.coordenada)
         else:
             self.routersCoordenates.remove(bajaRouter.coordenada)
+            #self.routersInactivosCoordenates.add(bajaRouter.coordenada)
 
             current = self.head
             while current.Router.coordenada != bajaRouter.coordenada:
@@ -100,10 +110,8 @@ class RouterManager():
             if router is not None:
                 router.desactivarRouter(self.removeRouter)
                 self.routersInactivos[router] = router._timer
-
     def set_prob_caida(self, prob_caida:int) -> None:
         self.prob_caida = prob_caida
-
     def rehabilitacionRoutersTick(self, tiempoPorTick:int) -> None:
         # Por cada tick que pasa, decrementa el timer de cada router inactivo
         # Si el timer llega a 0, rehabilita el router y lo agrega a la lista de routers activos
@@ -116,10 +124,11 @@ class RouterManager():
         if router.estado == RouterEstado.INACTIVO:
             router.set_estado(RouterEstado.EN_RESET)
         if timer == 0:
-            self.addRouter(router)
             self.routersInactivos.pop(router)
+            self.addRouter(router)
             router.set_estado(RouterEstado.ACTIVO)
 
+    # obtener router al azar
     def getRandomAvailableRouter(self) -> Router:
         # funcion que devuelve un router al azar de entre los existentes
         
